@@ -1,0 +1,7 @@
+sentence-transformers
+numpy
+python-dotenv
+psycopg2-binary
+pgvector
+PyMuPDF
+requests
