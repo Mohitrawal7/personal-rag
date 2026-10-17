@@ -1,6 +1,24 @@
-# Personal RAG — PDF Question Answering
+# Personal RAG — PDF Question Answering (v1.0)
 
 A local Retrieval-Augmented Generation (RAG) application that lets users ask questions about PDF documents. It retrieves relevant passages using semantic vector search and keyword search, combines the results with Reciprocal Rank Fusion (RRF), and generates grounded answers using a locally running language model.
+
+## Version
+
+**Current version: 1.0.0 — Initial UI Release**
+
+Version 1.0.0 includes:
+- PDF upload through a Streamlit interface
+- PDF text extraction, chunking, and embeddings
+- PostgreSQL storage with pgvector
+- Hybrid retrieval using keyword and vector search
+- Local answer generation through Ollama
+- Answers with source filenames and page numbers
+- Temporary chat history for the current session
+
+**Known limitations:**
+- Retrieval searches the entire indexed database.
+- Chat history is not permanently saved.
+- Documents must be managed through the existing ingestion workflow and database; a document library is not yet available.
 
 ## Features
 
@@ -11,6 +29,8 @@ A local Retrieval-Augmented Generation (RAG) application that lets users ask que
 - Answer generation using Ollama
 - Source references with PDF filenames and page numbers
 - PostgreSQL persistence for documents, chunks, and embeddings
+- Streamlit UI for PDF uploads and interactive question answering
+- Temporary chat history during the current session
 - Docker Compose for PostgreSQL with pgvector
 - Automated unit tests using Python's `unittest`
 
@@ -144,6 +164,23 @@ The script extracts text, splits it into chunks, generates embeddings, and store
 
 Scanned PDFs without an extractable text layer may require OCR before ingestion.
 
+## Run the Web UI
+
+Start the Streamlit application:
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Open the local URL shown in the terminal, usually http://localhost:8501.
+
+Upload a PDF and ask questions. The application stores document chunks and embeddings in PostgreSQL, so they persist across sessions. Chat history is temporary and is not stored permanently.
+
+The current version searches across all documents already indexed in the database, not only the most recently uploaded PDF.
+
+To ingest PDFs without the UI, you can still use the CLI command above.
+
+
 ## Run Tests
 
 ```bash
@@ -155,6 +192,7 @@ The unit tests mock external calls where appropriate. They do not replace integr
 ## Project Structure
 
 ```text
+streamlit_app.py    # Streamlit UI
 app/
 ├── chunking/       # Text chunking
 ├── embeddings/     # Embedding model
@@ -176,13 +214,17 @@ requirements.txt    # Python dependencies
 .env.example        # Example configuration
 ```
 
-## Current Scope
 
-This project focuses on the core PDF ingestion, retrieval, and answer-generation pipeline. A user interface, broader integration tests, and additional production hardening can be added in future iterations.
+## Version 1.0 Scope
+
+Version 1 includes PDF upload, text extraction, chunking, embeddings, hybrid retrieval, local answer generation through Ollama, source references, and a Streamlit interface.
+
+Documents and embeddings persist in PostgreSQL. Chat history is temporary. The application currently searches across the entire indexed database.
+
+Multi-document management, persistent chat history, document-specific retrieval, and production deployment are future improvements.
 
 ## Future Improvements
 
-- Web interface for uploading PDFs and asking questions
 - Improved retrieval evaluation with a labeled question set
 - Better chunking and retrieval parameter tuning
 - Integration tests for database operations
